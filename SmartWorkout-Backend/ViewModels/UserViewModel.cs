@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SmartWorkout_Backend.Models
+namespace SmartWorkout_Backend.ViewModels
 {
-    public class User
+    public class UserViewModel
     {
-        [Key]
-        public int UserId { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -17,10 +15,6 @@ namespace SmartWorkout_Backend.Models
         public float? Weigth { get; set; }
         public float? Height { get; set; }
         [Required]
-        public DateTime BirthDay { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? UpdatedAt { get; set; }
-        public DateTime? DeletedAt { get; set; }
-        public bool IsDeleted { get; set; }        
+        public DateTime BirthDay { get; set; }        
     }
 }

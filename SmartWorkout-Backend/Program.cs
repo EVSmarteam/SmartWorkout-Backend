@@ -1,8 +1,14 @@
+using AutoWrapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using SmartWorkout_Backend.Authentication;
 using SmartWorkout_Backend.Connection;
 using SmartWorkout_Backend.Services;
 using System.Globalization;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +20,64 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<SmartWorkoutDbContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
+var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+builder.Services.Configure<AppSettings>(appSettingsSection);
+var appSettings = appSettingsSection.Get<AppSettings>();
+var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+builder.Services.AddSwaggerGen(options =>
+{
+    var groupName = "v1";
+
+    options.SwaggerDoc(groupName, new OpenApiInfo
+    {
+        Title = $"SmartWorkout Backend {groupName}",
+        Version = groupName,
+        Description = "REST Api realizada en .NET Core la cual regresa JSON metadata.",
+        Contact = new OpenApiContact
+        {
+            Name = "GitHub Repository",
+            Email = "sergio.aqs17@gmail.com",
+            Url = new Uri("https://github.com/Zerocomes/SmartWorkout-Backend/tree/master"),
+        }
+    });
+    var securitySchema = new OpenApiSecurityScheme
+    {
+        Description = "Logeate e Ingresa tu Token aqui",
+        Name = "Autorizacion",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer",
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = JwtBearerDefaults.AuthenticationScheme
+        }
+    };
+    options.AddSecurityDefinition(securitySchema.Reference.Id, securitySchema);
+    var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    { securitySchema, Array.Empty<string>() }
+                };
+    options.AddSecurityRequirement(securityRequirement);
+});
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var supportedCultures = new[] { new CultureInfo("es-Es") };
@@ -22,7 +86,6 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures = supportedCultures;
 });
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
@@ -38,6 +101,8 @@ app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartWorkout API v1");
 });
+
+app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions { UseCustomSchema = true, UseApiProblemDetailsException = true, IsDebug = true });
 
 app.UseHttpsRedirection();
 
