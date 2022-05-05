@@ -9,6 +9,7 @@ namespace SmartWorkout_Backend.Mapping
         public ViewModelToModelProfile()
         {
             CreateMap<UserViewModel, User>();
+            CreateMap<FavoriteExerciseViewModel, FavoriteExercise>();
         }
     }
 }
