@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartWorkout_Backend.Connection;
 
@@ -11,9 +12,10 @@ using SmartWorkout_Backend.Connection;
 namespace SmartWorkout_Backend.Migrations
 {
     [DbContext(typeof(SmartWorkoutDbContext))]
-    partial class SmartWorkoutDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220506004910_MonitoringAndRecommendationModels")]
+    partial class MonitoringAndRecommendationModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,13 +77,28 @@ namespace SmartWorkout_Backend.Migrations
                     b.ToTable("Exercise");
                 });
 
-            modelBuilder.Entity("SmartWorkout_Backend.Models.ExerciseMonitor", b =>
+            modelBuilder.Entity("SmartWorkout_Backend.Models.FavoriteExercise", b =>
                 {
-                    b.Property<int>("ExerciseMonitorId")
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExerciseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ExerciseId");
+
+                    b.HasIndex("ExerciseId");
+
+                    b.ToTable("FavoriteExercise");
+                });
+
+            modelBuilder.Entity("SmartWorkout_Backend.Models.MonitorExercise", b =>
+                {
+                    b.Property<int>("MonitorExerciseId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExerciseMonitorId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MonitorExerciseId"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -98,28 +115,13 @@ namespace SmartWorkout_Backend.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("ExerciseMonitorId");
+                    b.HasKey("MonitorExerciseId");
 
                     b.HasIndex("ExerciseId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ExerciseMonitor");
-                });
-
-            modelBuilder.Entity("SmartWorkout_Backend.Models.FavoriteExercise", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ExerciseId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "ExerciseId");
-
-                    b.HasIndex("ExerciseId");
-
-                    b.ToTable("FavoriteExercise");
+                    b.ToTable("MonitorExercise");
                 });
 
             modelBuilder.Entity("SmartWorkout_Backend.Models.RecommendExercise", b =>
@@ -185,10 +187,6 @@ namespace SmartWorkout_Backend.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("WearableId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<float?>("Weigth")
                         .HasColumnType("real");
 
@@ -208,7 +206,7 @@ namespace SmartWorkout_Backend.Migrations
                     b.Navigation("Dumbbell");
                 });
 
-            modelBuilder.Entity("SmartWorkout_Backend.Models.ExerciseMonitor", b =>
+            modelBuilder.Entity("SmartWorkout_Backend.Models.FavoriteExercise", b =>
                 {
                     b.HasOne("SmartWorkout_Backend.Models.Exercise", "Exercise")
                         .WithMany()
@@ -227,7 +225,7 @@ namespace SmartWorkout_Backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SmartWorkout_Backend.Models.FavoriteExercise", b =>
+            modelBuilder.Entity("SmartWorkout_Backend.Models.MonitorExercise", b =>
                 {
                     b.HasOne("SmartWorkout_Backend.Models.Exercise", "Exercise")
                         .WithMany()
