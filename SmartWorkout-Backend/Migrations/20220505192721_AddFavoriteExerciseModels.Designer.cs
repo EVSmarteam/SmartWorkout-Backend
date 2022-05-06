@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartWorkout_Backend.Connection;
 
@@ -11,9 +12,10 @@ using SmartWorkout_Backend.Connection;
 namespace SmartWorkout_Backend.Migrations
 {
     [DbContext(typeof(SmartWorkoutDbContext))]
-    partial class SmartWorkoutDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220505192721_AddFavoriteExerciseModels")]
+    partial class AddFavoriteExerciseModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,38 +77,6 @@ namespace SmartWorkout_Backend.Migrations
                     b.ToTable("Exercise");
                 });
 
-            modelBuilder.Entity("SmartWorkout_Backend.Models.ExerciseMonitor", b =>
-                {
-                    b.Property<int>("ExerciseMonitorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExerciseMonitorId"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ExerciseId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("HeartRate")
-                        .HasColumnType("real");
-
-                    b.Property<TimeSpan>("Time")
-                        .HasColumnType("time");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExerciseMonitorId");
-
-                    b.HasIndex("ExerciseId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ExerciseMonitor");
-                });
-
             modelBuilder.Entity("SmartWorkout_Backend.Models.FavoriteExercise", b =>
                 {
                     b.Property<int>("UserId")
@@ -120,27 +90,6 @@ namespace SmartWorkout_Backend.Migrations
                     b.HasIndex("ExerciseId");
 
                     b.ToTable("FavoriteExercise");
-                });
-
-            modelBuilder.Entity("SmartWorkout_Backend.Models.RecommendExercise", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ExerciseId")
-                        .HasColumnType("int");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
-
-                    b.Property<int>("Repetitions")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "ExerciseId");
-
-                    b.HasIndex("ExerciseId");
-
-                    b.ToTable("RecommendExercise");
                 });
 
             modelBuilder.Entity("SmartWorkout_Backend.Models.User", b =>
@@ -185,10 +134,6 @@ namespace SmartWorkout_Backend.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("WearableId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<float?>("Weigth")
                         .HasColumnType("real");
 
@@ -200,31 +145,12 @@ namespace SmartWorkout_Backend.Migrations
             modelBuilder.Entity("SmartWorkout_Backend.Models.Exercise", b =>
                 {
                     b.HasOne("SmartWorkout_Backend.Models.Dumbbell", "Dumbbell")
-                        .WithMany("Exercise")
+                        .WithMany()
                         .HasForeignKey("DumbbellId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Dumbbell");
-                });
-
-            modelBuilder.Entity("SmartWorkout_Backend.Models.ExerciseMonitor", b =>
-                {
-                    b.HasOne("SmartWorkout_Backend.Models.Exercise", "Exercise")
-                        .WithMany()
-                        .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SmartWorkout_Backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Exercise");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SmartWorkout_Backend.Models.FavoriteExercise", b =>
@@ -244,30 +170,6 @@ namespace SmartWorkout_Backend.Migrations
                     b.Navigation("Exercise");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SmartWorkout_Backend.Models.RecommendExercise", b =>
-                {
-                    b.HasOne("SmartWorkout_Backend.Models.Exercise", "Exercise")
-                        .WithMany()
-                        .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SmartWorkout_Backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Exercise");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SmartWorkout_Backend.Models.Dumbbell", b =>
-                {
-                    b.Navigation("Exercise");
                 });
 #pragma warning restore 612, 618
         }

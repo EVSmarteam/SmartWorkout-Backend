@@ -36,7 +36,7 @@ namespace SmartWorkout_Backend.Services
             switch (type)
             {                
                 case MessageType.Success: message = "Los datos se han registrado exitosamente"; break;
-                case MessageType.Info: message = "Proceso de solicitud exitoso"; break;
+                case MessageType.Info: message = "Proceso exitoso"; break;
             }
 
             return message;
