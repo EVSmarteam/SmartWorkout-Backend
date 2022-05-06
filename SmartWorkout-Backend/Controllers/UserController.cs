@@ -99,5 +99,19 @@ namespace SmartWorkout_Backend.Controllers
 
             return new ApiResponse<UserResource>(HttpStatusCode.OK, response.Message, userResource);
         }
+
+        [AllowAnonymous]
+        [HttpPut("{id}")]
+        public async Task<ApiResponse<UserResource>> UpdateUserWereable(int id, string wearableId)
+        {   
+            var response = await _userService.UpdateUserWereable(id, wearableId);
+
+            if (!response.Success)
+                throw new ApiException(response.Message);
+
+            var userResource = _mapper.Map<UserResource>(response.Data);
+
+            return new ApiResponse<UserResource>(HttpStatusCode.OK, response.Message, userResource);
+        }
     }
 }

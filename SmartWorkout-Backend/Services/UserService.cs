@@ -17,6 +17,7 @@ namespace SmartWorkout_Backend.Services
         Task<InnerResponse> SaveUser(User user);
         Task<InnerResponse> UpdateUser(User user);
         Task<InnerResponse> DeleteUser(int id);
+        Task<InnerResponse> UpdateUserWereable(int id, string wearableId);
     }
 
     public class UserService : BaseService, IUserService
@@ -91,6 +92,25 @@ namespace SmartWorkout_Backend.Services
             try
             {
                 user.UpdatedAt = DateTime.UtcNow;
+                _context.User.Update(user);
+                await SaveAsync();
+
+                return new InnerResponse(true, PostMessage(MessageType.Success), user);
+
+            }
+            catch (Exception ex)
+            {
+                return new InnerResponse(false, PostMessage(ex), null);
+            }
+        }
+
+        public async Task<InnerResponse> UpdateUserWereable(int id, string wearableId)
+        {
+            try
+            {
+                var user = await _context.User.FindAsync(id);
+                user.UpdatedAt = DateTime.UtcNow;
+                user.WearableId = wearableId;
                 _context.User.Update(user);
                 await SaveAsync();
 
