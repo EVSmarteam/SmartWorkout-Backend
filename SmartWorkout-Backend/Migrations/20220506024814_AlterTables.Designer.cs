@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartWorkout_Backend.Connection;
 
@@ -11,9 +12,10 @@ using SmartWorkout_Backend.Connection;
 namespace SmartWorkout_Backend.Migrations
 {
     [DbContext(typeof(SmartWorkoutDbContext))]
-    partial class SmartWorkoutDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220506024814_AlterTables")]
+    partial class AlterTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

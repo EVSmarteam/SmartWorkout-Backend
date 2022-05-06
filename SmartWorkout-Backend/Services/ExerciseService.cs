@@ -10,6 +10,7 @@ namespace SmartWorkout_Backend.Services
         Task<InnerResponse> GetExercises();
         Task<InnerResponse> GetExerciseById(int id);
         Task<InnerResponse> GetFavoriteExercises(int id);
+        Task<InnerResponse> GetRecommendExercises(int id);
         Task<InnerResponse> SaveFavoriteExercise(FavoriteExercise favoriteExercise);
         Task<InnerResponse> DeleteFavoriteExercise(FavoriteExercise favoriteExercise);
     }
@@ -72,6 +73,15 @@ namespace SmartWorkout_Backend.Services
                 .ToListAsync();
 
             return new InnerResponse(true, PostMessage(MessageType.Info), favoriteExercises);
+        }
+
+        public async Task<InnerResponse> GetRecommendExercises(int id)
+        {
+            var recommendExercises = await _context.RecommendExercise.Include(x => x.Exercise)
+                .Where(x => x.UserId == id)
+                .ToListAsync();
+
+            return new InnerResponse(true, PostMessage(MessageType.Info), recommendExercises);
         }
     }
 }

@@ -10,12 +10,15 @@ namespace SmartWorkout_Backend.Connection
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<FavoriteExercise>().HasKey(x => new { x.UserId, x.ExerciseId });
+            modelBuilder.Entity<RecommendExercise>().HasKey(x => new { x.UserId, x.ExerciseId });
         }
 
         public DbSet<User> User { get; set; }
         public DbSet<Exercise> Exercise { get; set; }
         public DbSet<Dumbbell> Dumbbell { get; set; }
         public DbSet<FavoriteExercise> FavoriteExercise { get; set; }
+        public DbSet<RecommendExercise> RecommendExercise { get; set; }
+        public DbSet<ExerciseMonitor> ExerciseMonitor { get; set; }
 
     }
 }

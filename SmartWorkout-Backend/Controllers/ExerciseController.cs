@@ -46,13 +46,23 @@ namespace SmartWorkout_Backend.Controllers
         }
 
         [Authorize]
-        [HttpGet("User/{id}")]
+        [HttpGet("Favorite/User/{id}")]
         public async Task<ApiResponse<List<FavoriteExerciseResource>>> GetFavoriteExercises(int id)
         {
             var response = await _exerciseService.GetFavoriteExercises(id);
             var favoriteExercises = _mapper.Map<List<FavoriteExerciseResource>>(response.Data);
 
             return new ApiResponse<List<FavoriteExerciseResource>>(HttpStatusCode.OK, response.Message, favoriteExercises);
+        }
+
+        [Authorize]
+        [HttpGet("Recommend/User/{id}")]
+        public async Task<ApiResponse<List<RecommendExerciseResource>>> GetRecommendExercises(int id)
+        {
+            var response = await _exerciseService.GetRecommendExercises(id);
+            var recommendExercises = _mapper.Map<List<RecommendExerciseResource>>(response.Data);
+
+            return new ApiResponse<List<RecommendExerciseResource>>(HttpStatusCode.OK, response.Message, recommendExercises);
         }
 
         [Authorize]

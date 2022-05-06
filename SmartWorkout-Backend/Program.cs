@@ -89,6 +89,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
 builder.Services.AddScoped<IDumbbellService, DumbbellService>();
+builder.Services.AddScoped<IExerciseMonitorService, ExerciseMonitorService>();
 builder.Services.AddMvc().AddJsonOptions(o =>
 {
     o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;

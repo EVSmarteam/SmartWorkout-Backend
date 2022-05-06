@@ -14,6 +14,8 @@ namespace SmartWorkout_Backend.Mapping
             CreateMap<Dumbbell, DumbbellResource>();
             CreateMap<Exercise, ExerciseResource>();
             CreateMap<FavoriteExercise, FavoriteExerciseResource>();
+            CreateMap<RecommendExercise, RecommendExerciseResource>();
+            CreateMap<ExerciseMonitor, ExerciseMonitorResource>();
         }
     }
 }
