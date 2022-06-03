@@ -61,7 +61,7 @@ namespace SmartWorkout_Backend.Controllers
 
             var responseData = response.Data as AuthenticateResponse;
             var userResource = _mapper.Map<UserResource>(responseData.User);
-            
+
             return new ApiResponse<AuthenticateResponse>(HttpStatusCode.OK, response.Message, new AuthenticateResponse(userResource, responseData.Token));
         }
 
