@@ -47,7 +47,7 @@ namespace SmartWorkout_Backend.Tests
 
             var registrationResponse = await JsonSerializer.DeserializeAsync<ApiResponse<AuthenticateResponse>>(await response.Content.ReadAsStreamAsync());
             if (response.IsSuccessStatusCode)
-                return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIxIiwiZW1haWwiOiJzZXJnaW8uYXFzMTdAZ21haWwuY29tIiwibmFtZSI6IlNlcmdpbyBRdWlyb3oiLCJuYmYiOjE2NTQyMDY4NjYsImV4cCI6MTY1NDgxMTY2NiwiaWF0IjoxNjU0MjA2ODY2fQ._WZ24CR0DkNxxjvrJiJPRMpTgWMlWGxFn6yHQKLbL1I";
+                return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIxIiwiZW1haWwiOiJzZXJnaW8uYXFzMTdAZ21haWwuY29tIiwibmFtZSI6IlNlcmdpbyBRdWlyb3oiLCJuYmYiOjE2NTU0NjE2NTYsImV4cCI6MTY1NjA2NjQ1NiwiaWF0IjoxNjU1NDYxNjU2fQ.sffa2jKvf62yCjVltAZRlf7Ekjox0Mod7dX6XxGFQ4c";
             return registrationResponse.Data.Token;
         }
     }

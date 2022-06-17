@@ -60,6 +60,10 @@ namespace SmartWorkout_Backend.Controllers
         public async Task<ApiResponse<List<RecommendExerciseResource>>> GetRecommendExercises(int id)
         {
             var response = await _exerciseService.GetRecommendExercises(id);
+
+            if (!response.Success)
+                throw new ApiException(response.Message);
+
             var recommendExercises = _mapper.Map<List<RecommendExerciseResource>>(response.Data);
 
             return new ApiResponse<List<RecommendExerciseResource>>(HttpStatusCode.OK, response.Message, recommendExercises);
